@@ -1,18 +1,16 @@
 {
-  "name": "nodejs",
+  "name": "express-hello-world",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Express Hello World on Render",
+  "main": "app.js",
+  "repository": "https://github.com/render-examples/express-hello-world",
+  "author": "Render Developers",
+  "license": "MIT",
+  "private": false,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@types/node": "^18.0.6",
-    "better-sqlite3": "^9.4.0",
-    "express": "^4.19.2",
-    "node-fetch": "^3.2.6"
+    "express": "^5.0.0"
   }
 }
