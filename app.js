@@ -15,7 +15,7 @@ const html = `
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Hello from Render!</title>
+    <title>わかばのみち</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
       setTimeout(() => {
@@ -55,8 +55,11 @@ const html = `
     </style>
   </head>
   <body>
+  
     <section>
-      Hello from オタクは残酷だが正しい
+      「わかばのみち」は、通りにくい道や整備されていない道を知りたい免許を取ったばかりの大学生向けのMAPアプリです。
+      これは、道に口コミを残したり、その口コミを見たりすることができ、既存のMAPアプリとは違って、運転手主観のリアルな評価が備わっているものです。
+      from オタクは残酷だが正しい
     </section>
   </body>
 </html>
