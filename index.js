@@ -14,5 +14,3 @@ app.listen(3000, function () {
   const start = Date.now();
   console.log("server started");
 });
-//ここから上は全く分からないのでコピペしてお借りしました。
-

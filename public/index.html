@@ -1,58 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="styles.css">
-  <title>あんふlibrary</title>
-</head>
-<body>
-  データベース設計論・演習(2)
-  <h2>あんふlibrary</h2>
-  ようこそ！まずはログインしてください。
-  <br>
-  ユーザーネーム：<input id="uname" type="text"><br>
-  パスワード　　：<input id="pass" type="password">
-  <button id="rogin">ログイン</button>
-  <div id="roginerr"></div><br>
-  <button id="newUser">新規登録はこちらから</button>
-  <br>
-  <script>
-    document.getElementById('rogin').addEventListener('click', async () => {
-      const username = document.getElementById('uname').value;
-      const password = document.getElementById('pass').value;
-      const errorDiv = document.getElementById('roginerr');
-      console.log(typeof(username));
-      console.log(typeof(password));
-      
-      try {
-        const response = await fetch('/api/query/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ uname: username, pass: password })
-        });
-        
-        const result = await response.json();
-        console.log('API Response:', result); // レスポンスの内容を確認
-        if (response.ok && result.success) {
-          console.log('Login successful:', result);
-          location.href = `home.html?username=${encodeURIComponent(username)}`;
-        } else {
-          
-          errorDiv.textContent = 'ユーザーネームまたはパスワードが間違っています。';
-          errorDiv.style.color = 'red';
-        }
-      } catch (error) {
-        console.error('ログインエラー:', error);
-        errorDiv.textContent = 'ログインに失敗しました。再試行してください。';
-        errorDiv.style.color = 'red';
-      }
-    });
-  </script>
-</body>
-<footer>
-  2024 hina
-</footer>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <title>わかばのみち</title>
+  </head>
+  <body>
+    Hello World!
+  </body>
+  <footer>2024 オタクは残酷だが正しい</footer>
 </html>
