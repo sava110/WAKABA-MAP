@@ -1,0 +1,321 @@
+/* Reset some default styles */
+body, h2, p, form {
+  margin: 5vw;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0ffff;
+  text-align: center;
+  font-size: 2vm;
+}
+html{
+  background-color: #afeeee;
+}
+img{
+  width:80%;
+  height:auto;
+  
+}
+figure{
+  margin : 0;
+}
+aside{
+    background-color: #87cefa;
+}
+h4,h2{
+  margin:2vm;
+  background-color: #87cefa;
+  font-size: 3vm;
+}
+  #num_ber{
+    height: 7vh;
+    background-color: #87cefa;
+    font-size: 3vm;
+    text-align: center;
+    padding-top: 3vh;
+  }
+  a{
+    margin:1vm;
+  }
+
+button {
+  display: block;
+  margin: 20px auto; /* 中央に配置 */
+  padding: 15px; /* 上下の余白を設定 */
+  width: 80%; /* 画面幅の80%に設定 */
+  max-width: 300px; /* 最大幅を300pxに設定 */
+  background-color: #3089e8; /* 青系の背景色 */
+  color: white; /* 文字色を白にする */
+  border: none; /* ボーダーを削除 */
+  border-radius: 10px; /* 丸みを持たせる */
+  font-size: 16px; /* 文字サイズを調整 */
+  cursor: pointer; /* ポインターをカーソルにする */
+  text-align: center; /* 文字を中央に揃える */
+  transition: background-color 0.3s ease; /* 背景色の変更にアニメーションを追加 */
+}
+
+button:hover {
+  background-color: #0056b3; /* ホバー時の背景色 */
+}
+
+.selected {
+  background-color: lightblue;
+}
+.index,.mypage,.board {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #87cefa;
+  color: #0000ff;
+  border: none;
+  border-radius: 5px;
+  margin: 1vw;
+  width: 80%;
+  font-size: 1.5em;
+}
+#sendButton,#send2Button{
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #87cefa;
+  color: #0000ff;
+  border: none;
+  border-radius: 5px;
+  margin: 1vw;
+  width: 60%;
+  font-size: 1.2em;
+}
+/* Styles for Larger Screens (Tablet and Desktop) */
+@media only screen and (min-width: 600px) {
+  body{
+    font-size: 2vm;
+  }
+  form {
+    display: inline-block;
+    text-align: left;
+    margin: 20px;
+  }
+
+  label {
+    display: inline-block;
+    width: 30%; /* ラベルの幅を45%に変更 */
+    text-align: left;
+    margin-bottom: 5px;
+  }
+  
+  input {
+    width: 60%; /* inputの幅を45%に変更 */
+    margin-bottom: 10px;
+  }
+
+  .button {
+    margin: 10px;
+    
+  }
+
+  #personal_data {
+    display: block;
+    text-align: left;
+    margin: 20px auto;
+    
+    background-color: #add8e6; /* Light Blue */
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  #results-table,#board-table {
+    width: 100%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    text-align: center;
+    background-color: #f0f8ff;
+  }
+
+  #results-table th, #results-table td ,#table-body th,#table-body td{
+    border: 1px solid #000;
+    text-align: left;
+    padding: 8px;
+  }
+
+  #results-table th , #board-table th{
+    background-color: #00008b; /* Dark Blue */
+    color: #fff;
+  }
+
+  #results-table tr.review-complete {
+    background-color: pink;
+  }
+}
+
+/* Mobile First Approach: Styles for Small Screens */
+@media only screen and (max-width: 600px) {
+  body{
+    font-size: 4vm;
+  }
+  .button {
+    width: 100%;
+    margin: 10px;
+  }
+
+  form, #personal_data {
+    margin: 10px;
+  }
+
+  label {
+    display: inline-block;
+    width: 30%; /* ラベルの幅を45%に変更 */
+    text-align: left;
+    margin-bottom: 5px;
+  }
+  .index,.mypage,.board {
+    font-size: 1.0em;
+  }
+  input {
+    width: 60%; /* inputの幅を45%に変更 */
+    margin-bottom: 10px;
+  }
+
+  #results-table, #table-body, #board-table {
+    width: 100%; /* 修正: 幅を100%に変更 */
+    margin: 0px;
+    border-collapse: collapse;
+    text-align: center;
+    background-color: #f0f8ff;
+  }
+
+  #results-table th, #results-table td, #table-body th, #table-body td, #board-table th {
+    border: 1px solid #000;
+    text-align: left;
+    padding: 8px;
+  }
+
+  #results-table th, #board-table th {
+    background-color: #00008b;
+    color: #fff;
+  }
+
+  #results-table tr.review-complete {
+    background-color: pink;
+  }
+  #personal_data {
+    display: block;
+    text-align: left;
+    margin: 20px auto;
+    background-color: #add8e6;
+    padding: 10px;
+    border-radius: 5px;
+  }
+}
+  #num_ber{
+    height: 7vh;
+    background-color: #87cefa;
+    font-size: 5vm;
+    text-align: center;
+    padding-top: 3vh;
+  }
+
+
+
+
+  body {
+    font-family: Arial, sans-serif;
+  }
+
+  #bookDetailContainer {
+    margin: 20px;
+  }
+
+  #bookDetail {
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+
+  .book img {
+    display: block;
+    margin: 0 auto 10px;
+    max-width: 100%;
+    height: auto; /* 画像の縦横比を維持 */
+  }
+
+  #bookTitleAuthor {
+    text-align: center;
+    margin-bottom: 20px; /* 画像とボタンの間にスペースを追加 */
+  }
+
+  .button-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* ボタン間の間隔 */
+    justify-content: center;
+    margin-bottom: 20px; /* ボタンと貸主名の間にスペースを追加 */
+  }
+
+  .button-container button {
+    flex: 1 1 calc(50% - 10px); /* 画面サイズに合わせてボタンを2列に配置 */
+    padding: 10px;
+    margin: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .button-container button:hover {
+    background-color: #e0e0e0;
+  }
+
+  @media (max-width: 600px) {
+    .button-container button {
+      flex: 1 1 calc(100% - 10px); /* スクリーン幅が狭い場合は1列に */
+    }
+  }
+
+  #bookDetail p {
+    margin-top: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  table, th, td {
+    border: 1px solid #ddd;
+  }
+
+  th, td {
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f4f4f4;
+  }
+
+  #imagePlaceholder {
+    height: 200px; /* 画像のスペースを確保 */
+    background-color: #f0f0f0; /* プレースホルダーの背景色 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px; /* 画像とボタンの間にスペースを追加 */
+  }
+
+.popup {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #444;
+  color: #fff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.popup.show {
+  display: block;
+}

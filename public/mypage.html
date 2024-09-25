@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <title>あんふlibrary</title>
+</head>
+<body>
+  データベース設計論・演習(2)
+  <h2>あんふlibrary</h2>
+  ようこそ！まずはログインしてください。
+  <br>
+  ユーザーネーム：<input id="uname" type="text"><br>
+  パスワード　　：<input id="pass" type="password">
+  <button id="rogin">ログイン</button>
+  <div id="roginerr"></div>
+  <br>
+  <script>
+    document.getElementById('rogin').addEventListener('click', () => {
+      const username = document.getElementById('uname').value;
+      const password = document.getElementById('pass').value;
+      const errorDiv = document.getElementById('roginerr');
+      
+      if (username === 'aaa' && password === 'apass') {
+        location.href = 'home.html';
+      } else {
+        errorDiv.textContent = 'ユーザーネームまたはパスワードが間違っています。';
+        errorDiv.style.color = 'red';
+      }
+    });
+  </script>
+</body>
+<footer>
+  2024 hina
+</footer>
+</html>

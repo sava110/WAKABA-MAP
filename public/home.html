@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <title>あんふlibrary</title>
+</head>
+<body>
+  データベース設計論・演習(2)
+  <h2>あんふlibrary</h2>
+  <a id="uname"></a>さん、<a id="aisatsu"></a>
+  <br>
+  <button id="search">検索</button>
+  現在<a id="book_num"></a>冊あります
+  <button id="entry">本の登録</button>
+  新たな本の登録や、貸主登録はこちらへ。
+  <button id="lent">貸与・返却確認手続き</button>
+  現在<a id="lent_num"></a>冊貸し借りしています
+  <button id="mypage">マイページ</button>
+  登録情報の編集や自分の本の状態を確認するにはこちらから。
+  <br>
+  <script>
+
+    // グローバル変数としてusernameを定義
+    let username = '';
+
+    window.onload = function() {
+      const params = new URLSearchParams(window.location.search);
+      username = params.get('username');
+      document.getElementById('uname').textContent = username;
+      fetchAisatsu();
+      fetchBookNum();
+      fetchLentNum(username);
+    }
+
+    async function fetchAisatsu() {
+      try {
+        const response = await fetch('api/query/greeting');
+        if (!response.ok) {
+          throw new Error(`Error fetching greeting: ${response.statusText}`);
+        }
+        const data = await response.json();
+        document.getElementById('aisatsu').textContent = data.greeting || '挨拶のデータがありません';
+      } catch (error) {
+        console.error(error);
+        document.getElementById('aisatsu').textContent = '挨拶のデータを読み込めませんでした';
+      }
+    }
+
+    // 本の数を取得する関数
+    async function fetchBookNum() {
+      try {
+        const response = await fetch('api/query/book_count');
+        if (!response.ok) {
+          throw new Error(`Error fetching book count: ${response.statusText}`);
+        }
+        const data = await response.json();
+        document.getElementById('book_num').textContent = data.count || '0';
+      } catch (error) {
+        console.error(error);
+        document.getElementById('book_num').textContent = '本の数を読み込めませんでした';
+      }
+    }
+
+    // 貸し借りの数を取得する関数
+    async function fetchLentNum(username) {
+      try {
+        const response = await fetch('/api/query/lent_count', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username }) // リクエストボディ
+        });
+        if (!response.ok) {
+          throw new Error(`Error fetching lent count: ${response.statusText}`);
+        }
+        const data = await response.json();
+        document.getElementById('lent_num').textContent = data.count || '0';
+      } catch (error) {
+        console.error(error);
+        document.getElementById('lent_num').textContent = '貸し借りの数を読み込めませんでした';
+      }
+    }
+
+    document.getElementById('search').addEventListener('click', () => {
+      location.href = `search.html?username=${encodeURIComponent(username)}`;
+    });
+
+    document.getElementById('entry').addEventListener('click', () => {
+      location.href = `entry.html?username=${encodeURIComponent(username)}`;
+    });
+
+    document.getElementById('lent').addEventListener('click', () => {
+      location.href = `lent.html?username=${encodeURIComponent(username)}`;
+    });
+
+    document.getElementById('mypage').addEventListener('click', () => {
+      location.href = 'mypage.html';
+    });
+    
+  </script>
+</body>
+<footer>
+  2024 hina
+</footer>
+</html>
