@@ -29,7 +29,7 @@ const html = `
         });
       }, 500);
     </script>
-    <script src="http://maps.google.com/maps/api/js?key={AIzaSyD1NN1tlXmPBxyHPvkgkVE4-NMiAyNj1Bo}&language=ja"></script>
+    <script src="http://maps.google.com/maps/api/js?key=AIzaSyD1NN1tlXmPBxyHPvkgkVE4-NMiAyNj1Bo&language=ja"></script>
     <style>
       @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
       @font-face {
@@ -46,6 +46,8 @@ const html = `
       body {
         background: white;
       }
+      html { height: 100% }
+      body { height: 100% }
       #map { height: 90%; width: 90%}
       section {
         border-radius: 1em;
