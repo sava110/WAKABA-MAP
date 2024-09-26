@@ -4,8 +4,6 @@ const port = process.env.PORT || 3001;
 
 app.get("/", (req, res) => res.type("html").send(html));
 
-//APIキー
-//AIzaSyD1NN1tlXmPBxyHPvkgkVE4-NMiAyNj1Bo
 const server = app.listen(port, () =>
   console.log(`Example app listening on port ${port}!`)
 );
@@ -29,7 +27,9 @@ const html = `
         });
       }, 500);
     </script>
-    <script src="https://maps.google.com/maps/api/js?key=AIzaSyD1NN1tlXmPBxyHPvkgkVE4-NMiAyNj1Bo&language=ja"></script>
+    <script type = "text/javascript" src = "apikey.js">const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;<script>
+    <script src="https://maps.google.com/maps/api/js?key={googleMapsApiKey}&language=ja"></script>
+    
     <style>
       @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
       @font-face {
@@ -70,7 +70,7 @@ const html = `
     
     <!-- 地図の表示 -->
     <div id="map"></div>
-    
+
     <script>
       var map;
       var marker = [];
