@@ -30,16 +30,7 @@ const html = `
       }, 500);
     </script>
     <script src="http://maps.google.com/maps/api/js?key={AIzaSyD1NN1tlXmPBxyHPvkgkVE4-NMiAyNj1Bo}&language=ja"></script>//google MAP API
-    <script>
-    var MyLatLng = new google.maps.LatLng(36.11159009499647, 140.1043326938361);
-    var Options = {
-    zoom: 15,      //地図の縮尺値
-    center: MyLatLng,    //地図の中心座標
-    mapTypeId: 'roadmap'   //地図の種類
-    };
-    var map = new google.maps.Map(document.getElementById('map'), Options);
-</script>
-    <style>
+    
       @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
       @font-face {
         font-family: "neo-sans";
@@ -74,7 +65,18 @@ const html = `
       これは、道に口コミを残したり、その口コミを見たりすることができ、既存のMAPアプリとは違って、運転手主観のリアルな評価が備わっているものです。
       from オタクは残酷だが正しい
     </section>
-    <div id = map><div>
+    <div id = "map"></div>
+
+    <script>
+    var MyLatLng = new google.maps.LatLng(36.11159009499647, 140.1043326938361);
+    var Options = {
+    zoom: 15,      //地図の縮尺値
+    center: MyLatLng,    //地図の中心座標
+    mapTypeId: 'roadmap'   //地図の種類
+    };
+    var map = new google.maps.Map(document.getElementById('map'), Options);
+</script>
+    <style>
   </body>
 </html>
 `;
