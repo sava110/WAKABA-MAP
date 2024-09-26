@@ -29,7 +29,7 @@ const html = `
         });
       }, 500);
     </script>
-    <script src="http://maps.google.com/maps/api/js?key=AIzaSyD1NN1tlXmPBxyHPvkgkVE4-NMiAyNj1Bo&language=ja"></script>
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyD1NN1tlXmPBxyHPvkgkVE4-NMiAyNj1Bo&language=ja"></script>
     <style>
       @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
       @font-face {
@@ -38,17 +38,18 @@ const html = `
         font-style: normal;
         font-weight: 700;
       }
-      html {
+      html, body {
         font-family: neo-sans;
         font-weight: 700;
         font-size: calc(62rem / 16);
+        height: 100%;
+        margin: 0;
+        padding: 0;
       }
       body {
         background: white;
       }
-      html { height: 100% }
-      body { height: 100% }
-      #map { height: 90%; width: 90%}
+      #map { height: 90%; width: 90% }
       section {
         border-radius: 1em;
         padding: 1em;
@@ -61,24 +62,22 @@ const html = `
     </style>
   </head>
   <body>
-  
     <section>
       「わかばのみち」は、通りにくい道や整備されていない道を知りたい免許を取ったばかりの大学生向けのMAPアプリです。
       これは、道に口コミを残したり、その口コミを見たりすることができ、既存のMAPアプリとは違って、運転手主観のリアルな評価が備わっているものです。
       from オタクは残酷だが正しい
     </section>
-    <div id = "map"></div>
+    <div id="map"></div>
 
     <script>
-    var MyLatLng = new google.maps.LatLng(36.11159009499647, 140.1043326938361);
-    var Options = {
-    zoom: 15,      //地図の縮尺値
-    center: MyLatLng,    //地図の中心座標
-    mapTypeId: 'roadmap'   //地図の種類
-    };
-    var map = new google.maps.Map(document.getElementById('map'), Options);
-</script>
-    <style>
+      var MyLatLng = new google.maps.LatLng(36.11159009499647, 140.1043326938361);
+      var Options = {
+        zoom: 15,      //地図の縮尺値
+        center: MyLatLng,    //地図の中心座標
+        mapTypeId: 'roadmap'   //地図の種類
+      };
+      var map = new google.maps.Map(document.getElementById('map'), Options);
+    </script>
   </body>
 </html>
 `;
