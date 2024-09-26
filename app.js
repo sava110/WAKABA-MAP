@@ -49,108 +49,78 @@ const html = `
       body {
         background: white;
       }
-      #map { height: 90%; width: 90% }
+      #map {
+        height: 400px; /* 地図の高さを指定 */
+        width: 90%; /* 幅を90%に */
+        margin: 0 auto; /* 中央に寄せる */
+      }
       section {
-        border-radius: 1em;
         padding: 1em;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, -50%);
+        text-align: center;
       }
     </style>
   </head>
   <body>
-    <a>
-      「わかばのみち」は、通りにくい道や整備されていない道を知りたい免許を取ったばかりの大学生向けのMAPアプリです。
-      これは、道に口コミを残したり、その口コミを見たりすることができ、既存のMAPアプリとは違って、運転手主観のリアルな評価が備わっているものです。
-      from オタクは残酷だが正しい
-    </a>
+    <section>
+      <p>
+        「わかばのみち」は、通りにくい道や整備されていない道を知りたい免許を取ったばかりの大学生向けのMAPアプリです。これは、道に口コミを残したり、その口コミを見たりすることができ、既存のMAPアプリとは違って、運転手主観のリアルな評価が備わっているものです。
+      </p>
+      <p>from オタクは残酷だが正しい</p>
+    </section>
+    
+    <!-- 地図の表示 -->
     <div id="map"></div>
-
+    
     <script>
-    /*
-      var MyLatLng = new google.maps.LatLng(36.11159009499647, 140.1043326938361);
-      var Options = {
-        zoom: 15,      //地図の縮尺値
-        center: MyLatLng,    //地図の中心座標
-        mapTypeId: 'roadmap'   //地図の種類
-      };
-      var map = new google.maps.Map(document.getElementById('map'), Options);
-    */
-      </script>
+      var map;
+      var marker = [];
+      var infoWindow = [];
+      var markerData = [
+        { name: 'つくば市', lat: 36.11159009499647, lng: 140.1043326938361 },
+        { name: '小川町駅', lat: 35.6951212, lng: 139.76610649999998 },
+        { name: '淡路町駅', lat: 35.69496, lng: 139.76746000000003 },
+        { name: '御茶ノ水駅', lat: 35.6993529, lng: 139.76526949999993 },
+        { name: '神保町駅', lat: 35.695932, lng: 139.75762699999996 },
+        { name: '新御茶ノ水駅', lat: 35.696932, lng: 139.76543200000003 }
+      ];
 
-    <script>
-    var map;
-    var marker = [];
-    var infoWindow = [];
-    var markerData = [ // マーカーを立てる場所名・緯度・経度
-      {
-          name: 'つくば市',
-          lat: 36.11159009499647,
-            lng: 140.1043326938361,
-            //icon: 'tam.png' // TAM 東京のマーカーだけイメージを変更する
-    }, {
-            name: '小川町駅',
-        lat: 35.6951212,
-            lng: 139.76610649999998
-    }, {
-            name: '淡路町駅',
-        lat: 35.69496,
-          lng: 139.76746000000003
-    }, {
-            name: '御茶ノ水駅',
-            lat: 35.6993529,
-            lng: 139.76526949999993
-    }, {
-            name: '神保町駅',
-        lat: 35.695932,
-        lng: 139.75762699999996
-    }, {
-            name: '新御茶ノ水駅',
-          lat: 35.696932,
-        lng: 139.76543200000003
-    }
-    ];
-    
-    function initMap() {
-    // 地図の作成
-        var mapLatLng = new google.maps.LatLng({lat: markerData[0]['lat'], lng: markerData[0]['lng']}); // 緯度経度のデータ作成
-      map = new google.maps.Map(document.getElementById('map'), { // #mapに地図を埋め込む
-        center: mapLatLng, // 地図の中心を指定
-          zoom: 15 // 地図のズームを指定
-          mapTypeId: 'roadmap'   //地図の種類
-      });
-    
-    // マーカー毎の処理
-    for (var i = 0; i < markerData.length; i++) {
-            markerLatLng = new google.maps.LatLng({lat: markerData[i]['lat'], lng: markerData[i]['lng']}); // 緯度経度のデータ作成
-            marker[i] = new google.maps.Marker({ // マーカーの追加
-            position: markerLatLng, // マーカーを立てる位置を指定
-                map: map // マーカーを立てる地図を指定
+      function initMap() {
+        var mapLatLng = new google.maps.LatLng({
+          lat: markerData[0]['lat'],
+          lng: markerData[0]['lng']
+        });
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: mapLatLng,
+          zoom: 15,
+          mapTypeId: 'roadmap'
+        });
+
+        for (var i = 0; i < markerData.length; i++) {
+          markerLatLng = new google.maps.LatLng({
+            lat: markerData[i]['lat'],
+            lng: markerData[i]['lng']
           });
-    
-        infoWindow[i] = new google.maps.InfoWindow({ // 吹き出しの追加
-            content: '<div class="sample">' + markerData[i]['name'] + '</div>' // 吹き出しに表示する内容
+          marker[i] = new google.maps.Marker({
+            position: markerLatLng,
+            map: map
           });
-    
-        markerEvent(i); // マーカーにクリックイベントを追加
-    }
-    /*
-      marker[0].setOptions({// TAM 東京のマーカーのオプション設定
-            icon: {
-            url: markerData[0]['icon']// マーカーの画像を変更
-          }
-      });*/
-    }
-    
-    // マーカーにクリックイベントを追加
-    function markerEvent(i) {
-        marker[i].addListener('click', function() { // マーカーをクリックしたとき
-          infoWindow[i].open(map, marker[i]); // 吹き出しの表示
-      });
-    }
+
+          infoWindow[i] = new google.maps.InfoWindow({
+            content: '<div class="sample">' + markerData[i]['name'] + '</div>'
+          });
+
+          markerEvent(i);
+        }
+      }
+
+      function markerEvent(i) {
+        marker[i].addListener('click', function() {
+          infoWindow[i].open(map, marker[i]);
+        });
+      }
+
+      // 地図を初期化
+      initMap();
     </script>
   </body>
 </html>
