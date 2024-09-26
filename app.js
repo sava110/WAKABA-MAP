@@ -41,7 +41,7 @@ const html = `
       html, body {
         font-family: neo-sans;
         font-weight: 700;
-        font-size: calc(62rem / 16);
+        font-size: 32;
         height: 100%;
         margin: 0;
         padding: 0;
