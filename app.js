@@ -1,4 +1,6 @@
 const express = require("express");
+require("dotenv").config();
+const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY; // .envからAPIキーを取得
 const app = express();
 const port = process.env.PORT || 3001;
 
@@ -27,9 +29,6 @@ const html = `
         });
       }, 500);
     </script>
-    <script type = "text/javascript" src = "apikey.js">const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;<script>
-    <script src="https://maps.google.com/maps/api/js?key={googleMapsApiKey}&language=ja"></script>
-    
     <style>
       @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
       @font-face {
@@ -71,6 +70,9 @@ const html = `
     <!-- 地図の表示 -->
     <div id="map"></div>
 
+    <!-- Google Maps APIのスクリプトタグを埋め込む -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap&language=ja" async defer></script>
+
     <script>
       var map;
       var marker = [];
@@ -84,6 +86,7 @@ const html = `
         { name: '新御茶ノ水駅', lat: 35.696932, lng: 139.76543200000003 }
       ];
 
+      // 地図の初期化関数
       function initMap() {
         var mapLatLng = new google.maps.LatLng({
           lat: markerData[0]['lat'],
@@ -118,9 +121,6 @@ const html = `
           infoWindow[i].open(map, marker[i]);
         });
       }
-
-      // 地図を初期化
-      initMap();
     </script>
   </body>
 </html>
