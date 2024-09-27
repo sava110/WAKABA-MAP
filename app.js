@@ -91,87 +91,87 @@ const html = `
 
     <script>
     let map;
-let marker = null; // 現在のマーカーを保存する変数
-//let savedMarkers = []; // 保存されたマーカーのリスト
+    let marker = null; // 現在のマーカーを保存する変数
+    //let savedMarkers = []; // 保存されたマーカーのリスト
 
-function initMap() {
-  const mapLatLng = new google.maps.LatLng({
-    lat: 36.11159009499647,
-    lng: 140.1043326938361, // 初期位置：つくば市
-  });
+    function initMap() {
+      const mapLatLng = new google.maps.LatLng({
+      lat: 36.11159009499647,
+      lng: 140.1043326938361, // 初期位置：つくば市
+    });
 
-  map = new google.maps.Map(document.getElementById("map"), {
-    center: mapLatLng,
-    zoom: 15,
-    mapTypeId: "roadmap",
-  });
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: mapLatLng,
+      zoom: 15,
+      mapTypeId: "roadmap",
+    });
 
-  const markerData = [
-    { name: 'つくば市', lat: 36.11159009499647, lng: 140.1043326938361 },
-    { name: '小川町駅', lat: 35.6951212, lng: 139.76610649999998 },
-    { name: '淡路町駅', lat: 35.69496, lng: 139.76746000000003 },
-    { name: '御茶ノ水駅', lat: 35.6993529, lng: 139.76526949999993 },
-    { name: '神保町駅', lat: 35.695932, lng: 139.75762699999996 },
-    { name: '新御茶ノ水駅', lat: 35.696932, lng: 139.76543200000003 }
-  ];
+    const markerData = [
+      { name: 'つくば市', lat: 36.11159009499647, lng: 140.1043326938361 },
+      { name: '小川町駅', lat: 35.6951212, lng: 139.76610649999998 },
+      { name: '淡路町駅', lat: 35.69496, lng: 139.76746000000003 },
+      { name: '御茶ノ水駅', lat: 35.6993529, lng: 139.76526949999993 },
+      { name: '神保町駅', lat: 35.695932, lng: 139.75762699999996 },
+      { name: '新御茶ノ水駅', lat: 35.696932, lng: 139.76543200000003 }
+    ];
 
-  for (let i = 0; i < markerData.length; i++) {
-    const markerLatLng = new google.maps.LatLng({
-      lat: markerData[i].lat,
-      lng: markerData[i].lng
-  });
+    for (let i = 0; i < markerData.length; i++) {
+      const markerLatLng = new google.maps.LatLng({
+        lat: markerData[i].lat,
+        lng: markerData[i].lng
+    });
     
-  const marker = new google.maps.Marker({
-    position: markerLatLng,
-    map: map,
-    title: markerData[i].name
-  });
+    const marker_Data = new google.maps.Marker({
+      position: markerLatLng,
+      map: map,
+      title: markerData[i].name
+    });
 
-  const infoWindow = new google.maps.InfoWindow({
-    content: '<div class="sample">' + markerData[i].name + '</div>'
-  });
+    const infoWindow = new google.maps.InfoWindow({
+      content: '<div class="sample">' + markerData[i].name + '</div>'
+    });
 
-  marker.push(marker);
-  infoWindow.push(infoWindow);
+    marker_Data.push(marker_Data);
+    infoWindow.push(infoWindow);
 
     // マーカーがクリックされたときのイベント
-    marker.addListener('click', () => {
-      infoWindow.open(map, marker);
+    marker_Data.addListener('click', () => {
+      infoWindow.open(map, marker_Data);
     });
   }
 
-  // マップをクリックしたときにマーカーを追加
-  map.addListener("click", (e) => {
-    placeMarker(e.latLng);
-  });
+    // マップをクリックしたときにマーカーを追加
+    map.addListener("click", (e) => {
+      placeMarker(e.latLng);
+    });
 
-  // 決定ボタンをクリックしたときにマーカーをリストに保存
-  document.getElementById("saveButton").addEventListener("click", saveMarker);
-}
+    // 決定ボタンをクリックしたときにマーカーをリストに保存
+     document.getElementById("saveButton").addEventListener("click", saveMarker);
+    }
 
-function placeMarker(latLng) {
-  // 既にマーカーがある場合、それを削除
-  if (marker) {
-    marker.setMap(null);
+    function placeMarker(latLng) {
+    // 既にマーカーがある場合、それを削除
+    if (marker) {
+      marker.setMap(null);
+    }
+
+    // 新しいマーカーを作成
+    marker = new google.maps.Marker({
+      position: latLng,
+      map: map,
+    });
+
+    // マーカー位置に地図を移動
+    map.panTo(latLng);
   }
 
-  // 新しいマーカーを作成
-  marker = new google.maps.Marker({
-    position: latLng,
-    map: map,
-  });
-
-  // マーカー位置に地図を移動
-  map.panTo(latLng);
-}
-
-function saveMarker() {
-  if (marker) {
-    // マーカーの位置情報をリストに保存
-    const markerPosition = marker.getPosition();
-    MarkerData.push({
-      lat: markerPosition.lat(),
-      lng: markerPosition.lng(),
+  function saveMarker() {
+    if (marker) {
+      // マーカーの位置情報をリストに保存
+      const markerPosition = marker.getPosition();
+      MarkerData.push({
+        lat: markerPosition.lat(),
+        lng: markerPosition.lng(),
     });
 
     console.log("Marker saved:", MarkerData);
