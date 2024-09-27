@@ -71,7 +71,7 @@ const html = `
     <div id="map"></div>
 
     <!-- Google Maps APIのスクリプトタグを埋め込む -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap&language=ja" async defer></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap"></script>
 
     <script>
       
