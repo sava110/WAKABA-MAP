@@ -1,8 +1,8 @@
-//const express = import("express");
-import express from "express";
-//import("dotenv").config();
-import dotenv from "dotenv";
-const res = dotenv.config();
+const express = require("express");
+//import express from "express";
+require("dotenv").config();
+//import dotenv from "dotenv";
+//const res = dotenv.config();
 
 const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY; // .envからAPIキーを取得
 const {google} = import("googleapis");
