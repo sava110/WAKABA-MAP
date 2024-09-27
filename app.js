@@ -1,31 +1,16 @@
 const express = require("express");
-//import express from "express";
 require("dotenv").config();
-//import dotenv from "dotenv";
-//const res = dotenv.config();
 
 const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY; // .envからAPIキーを取得
-const {google} = import("googleapis");
+const { google } = require("googleapis"); // 修正: requireに戻しました
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.get("/", (req, res) => res.type("html").send(html));
-
-const server = app.listen(port, () =>
-  console.log(`Example app listening on port ${port}!`)
-);
-
-
-server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
-
-const html = `
-<!DOCTYPE html>
+const html = `<!DOCTYPE html>
 <html>
   <head>
     <title>わかばのみち</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-
     <style>
       @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
       @font-face {
@@ -37,12 +22,11 @@ const html = `
       html, body {
         font-family: neo-sans;
         font-weight: 700;
-        font-size: 32;
+        font-size: 32px; /* 修正: font-sizeに単位を追加 */
         height: 100%;
         margin: 0;
         padding: 0;
       }
-
       body {
         background: white;
       }
@@ -55,8 +39,7 @@ const html = `
         padding: 1em;
         text-align: center;
       }
-
-       #saveButton {
+      #saveButton {
         display: block;
         margin: 1em auto;
         padding: 0.5em 1em;
@@ -71,7 +54,6 @@ const html = `
         background-color: #45a049;
       }
     </style>
-
   </head>
   <body>
     <section>
@@ -83,153 +65,83 @@ const html = `
     
     <!-- 地図の表示 -->
     <div id="map"></div>
-        <!-- マーカー保存用の決定ボタン -->
+    <!-- マーカー保存用の決定ボタン -->
     <button id="saveButton">この場所を保存</button>
 
     <!-- Google Maps APIのスクリプトタグを埋め込む -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap"></script>
 
     <script>
-    let map;
-    let marker = null; // 現在のマーカーを保存する変数
-    //let savedMarkers = []; // 保存されたマーカーのリスト
+      let map;
+      let marker = null; // 現在のマーカーを保存する変数
+      const markerData = []; // 保存されたマーカーのリスト
 
-    function initMap() {
-      const mapLatLng = new google.maps.LatLng({
-      lat: 36.11159009499647,
-      lng: 140.1043326938361, // 初期位置：つくば市
-    });
+      function initMap() {
+        const mapLatLng = new google.maps.LatLng(36.11159009499647, 140.1043326938361); // 初期位置：つくば市
 
-    map = new google.maps.Map(document.getElementById("map"), {
-      center: mapLatLng,
-      zoom: 15,
-      mapTypeId: "roadmap",
-    });
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: mapLatLng,
+          zoom: 15,
+          mapTypeId: "roadmap",
+        });
 
-    const markerData = [
-      { name: 'つくば市', lat: 36.11159009499647, lng: 140.1043326938361 },
-      { name: '小川町駅', lat: 35.6951212, lng: 139.76610649999998 },
-      { name: '淡路町駅', lat: 35.69496, lng: 139.76746000000003 },
-      { name: '御茶ノ水駅', lat: 35.6993529, lng: 139.76526949999993 },
-      { name: '神保町駅', lat: 35.695932, lng: 139.75762699999996 },
-      { name: '新御茶ノ水駅', lat: 35.696932, lng: 139.76543200000003 }
-    ];
+        // 初期マーカーを表示
+        for (let i = 0; i < markerData.length; i++) {
+          placeMarker(new google.maps.LatLng(markerData[i].lat, markerData[i].lng), markerData[i].name);
+        }
 
-  let map;
-    let marker = null; // 現在のマーカーを保存する変数
-    //let savedMarkers = []; // 保存されたマーカーのリスト
+        // マップをクリックしたときにマーカーを追加
+        map.addListener("click", (e) => {
+          placeMarker(e.latLng);
+        });
 
-    function initMap() {
-      const mapLatLng = new google.maps.LatLng({
-      lat: 36.11159009499647,
-      lng: 140.1043326938361, // 初期位置：つくば市
-    });
+        // 決定ボタンをクリックしたときにマーカーをリストに保存
+        document.getElementById("saveButton").addEventListener("click", saveMarker);
+      }
 
-    map = new google.maps.Map(document.getElementById("map"), {
-      center: mapLatLng,
-      zoom: 15,
-      mapTypeId: "roadmap",
-    });
+      function placeMarker(latLng, title) {
+        if (marker) {
+          marker.setMap(null); // 既にあるマーカーを削除
+        }
 
-    const markerData = [
-      { name: 'つくば市', lat: 36.11159009499647, lng: 140.1043326938361 },
-      { name: '小川町駅', lat: 35.6951212, lng: 139.76610649999998 },
-      { name: '淡路町駅', lat: 35.69496, lng: 139.76746000000003 },
-      { name: '御茶ノ水駅', lat: 35.6993529, lng: 139.76526949999993 },
-      { name: '神保町駅', lat: 35.695932, lng: 139.75762699999996 },
-      { name: '新御茶ノ水駅', lat: 35.696932, lng: 139.76543200000003 }
-    ];
+        marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: title || '新しいマーカー', // タイトルを設定
+        });
 
-   for (let i = 0; i < markerData.length; i++) {
-      const markerLatLng = new google.maps.LatLng({
-        lat: markerData[i].lat,
-        lng: markerData[i].lng
-      });
+        // マーカー位置に地図を移動
+        map.panTo(latLng);
+      }
 
-      const marker_Data = new google.maps.marker.AdvancedMarkerElement({
-        position: markerLatLng,
-        map: map,
-        title: markerData[i].name
-      });
+      function saveMarker() {
+        if (marker) {
+          // マーカーの位置情報をリストに保存
+          const markerPosition = marker.getPosition();
+          markerData.push({
+            lat: markerPosition.lat(),
+            lng: markerPosition.lng(),
+          });
 
-      const infoWindow = new google.maps.InfoWindow({
-        content: '<div class="sample">' + markerData[i].name + '</div>'
-      });
+          console.log("Marker saved:", markerData);
 
-      // マーカーがクリックされたときのイベント
-      marker_Data.addListener('click', () => {
-        infoWindow.open(map, marker_Data);
-      });
-    }
-
-  // マップをクリックしたときにマーカーを追加
-  map.addListener("click", (e) => {
-    placeMarker(e.latLng);
-  });
-
-  // 決定ボタンをクリックしたときにマーカーをリストに保存
-  document.getElementById("saveButton").addEventListener("click", saveMarker);
-
-
-  function placeMarker(latLng) {
-    // 既にマーカーがある場合、それを削除
-    if (marker) {
-     marker.setMap(null);
-    }
-  }
-
-  // 新しいマーカーを作成
-  marker = new google.maps.marker.AdvancedMarkerElement({
-    position: latLng,
-    map: map,
-  });
-
-  // マーカー位置に地図を移動
-  map.panTo(latLng);
-  }
-
-  function saveMarker() {
-    if (marker) {
-      // マーカーの位置情報をリストに保存
-      const markerPosition = marker.getPosition();
-      markerData.push({
-        lat: markerPosition.lat(),
-        lng: markerPosition.lng(),
-    });
-
-    console.log("Marker saved:", MarkerData);
-
-    // マーカーをリセット
-    marker.setMap(null);
-    marker = null;
-  } else {
-    alert("まずマーカーを置いてください。");
-  }
-}
-
-  // マーカー位置に地図を移動
-  map.panTo(latLng);
-  }
-
-  function saveMarker() {
-    if (marker) {
-      // マーカーの位置情報をリストに保存
-      const markerPosition = marker.getPosition();
-      markerData.push({
-        lat: markerPosition.lat(),
-        lng: markerPosition.lng(),
-    });
-
-    console.log("Marker saved:", MarkerData);
-
-    // マーカーをリセット
-    marker.setMap(null);
-    marker = null;
-  } else {
-    alert("まずマーカーを置いてください。");
-  }
-}
+          // マーカーをリセット
+          marker.setMap(null);
+          marker = null;
+        } else {
+          alert("まずマーカーを置いてください。");
+        }
+      }
     </script>
   </body>
 </html>
 `;
+
+app.get("/", (req, res) => res.type("html").send(html));
+
+const server = app.listen(port, () =>
+  console.log(`Example app listening on port ${port}!`)
+);
+
+server.keepAliveTimeout = 120 * 1000;
+server.headersTimeout = 120 * 1000;
