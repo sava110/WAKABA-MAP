@@ -93,7 +93,12 @@ var map;
       ];
 
       // 地図の初期化関数
-      function initMap() {
+      async function initMap() {
+        const { Map } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
+          "marker",
+        );
+        
         var mapLatLng = new google.maps.LatLng({
           lat: markerData[0]['lat'],
           lng: markerData[0]['lng']
@@ -120,6 +125,19 @@ var map;
 
           markerEvent(i);
         }
+
+        //指定位置にマーカーを追加
+        map.addListener("click", (e) => {
+          placeMarkerAndPanTo(e.latLng, map);
+        });
+      
+        function placeMarkerAndPanTo(latLng, map) {
+          new google.maps.marker.AdvancedMarkerElement({
+          position: latLng,
+          map: map,
+          });
+          map.panTo(latLng);
+          }
       }
 
       function markerEvent(i) {
@@ -128,20 +146,4 @@ var map;
         });
       }
       
-      //指定位置にマーカーを追加
-      const { Map } = await google.maps.importLibrary("maps");
-      const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
-        "marker",
-      );
-
-      map.addListener("click", (e) => {
-        placeMarkerAndPanTo(e.latLng, map);
-        });
       
-      function placeMarkerAndPanTo(latLng, map) {
-        new google.maps.marker.AdvancedMarkerElement({
-        position: latLng,
-        map: map,
-      });
-      map.panTo(latLng);
-      }
