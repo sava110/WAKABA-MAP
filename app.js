@@ -2,15 +2,6 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.get("/", (req, res) => res.type("html").send(html));
-
-const server = app.listen(port, () =>
-  console.log(`Example app listening on port ${port}!`)
-);
-
-server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
-
 const html = `
 <!DOCTYPE html>
 <html>
@@ -43,6 +34,11 @@ const html = `
       body {
         background: white;
       }
+      #map {
+        height: 400px; /* 地図の高さを指定 */
+        width: 90%; /* 幅を90%に */
+        margin: 0 auto; /* 中央に寄せる */
+      }
       section {
         border-radius: 1em;
         padding: 1em;
@@ -51,16 +47,79 @@ const html = `
         left: 50%;
         margin-right: -50%;
         transform: translate(-50%, -50%);
+        text-align: center;
       }
     </style>
   </head>
   <body>
-  
     <section>
       「わかばのみち」は、通りにくい道や整備されていない道を知りたい免許を取ったばかりの大学生向けのMAPアプリです。
       これは、道に口コミを残したり、その口コミを見たりすることができ、既存のMAPアプリとは違って、運転手主観のリアルな評価が備わっているものです。
       from オタクは残酷だが正しい
     </section>
+
+    <!-- 地図の表示 -->
+    <div id="map"></div>
+    <!-- マーカー保存用の決定ボタン -->
+    <button id="saveButton">この場所を保存</button>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script>
+    <script>
+      let map;
+      const markers = []; // 複数マーカーを保存するための配列
+
+      function initMap() {
+        const initialLocation = { lat: 36.11159009499647, lng: 140.1043326938361 }; // 初期位置：つくば市
+
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: initialLocation,
+          zoom: 15,
+          mapTypeId: "roadmap",
+        });
+
+        // マップをクリックしたときにマーカーを追加
+        map.addListener("click", (event) => {
+          placeMarker(event.latLng);
+        });
+
+        // 決定ボタンをクリックしたときにマーカーをリストに保存
+        document.getElementById("saveButton").addEventListener("click", saveMarkers);
+      }
+
+      function placeMarker(location) {
+        const marker = new google.maps.Marker({
+          position: location,
+          map: map,
+        });
+
+        markers.push(marker); // 配列にマーカーを追加
+        map.panTo(location); // マーカー位置に地図を移動
+      }
+
+      function saveMarkers() {
+        if (markers.length === 0) {
+          alert("マーカーがまだありません。");
+          return;
+        }
+
+        const savedMarkers = markers.map(marker => ({
+          lat: marker.getPosition().lat(),
+          lng: marker.getPosition().lng(),
+        }));
+
+        console.log("保存されたマーカー:", savedMarkers);
+        alert("マーカーが保存されました。コンソールを確認してください。");
+      }
+    </script>
   </body>
 </html>
 `;
+
+app.get("/", (req, res) => res.type("html").send(html));
+
+const server = app.listen(port, () =>
+  console.log(`Example app listening on port ${port}!`)
+);
+
+server.keepAliveTimeout = 120 * 1000;
+server.headersTimeout = 120 * 1000;
