@@ -10,8 +10,79 @@ const server = app.listen(port, () =>
   console.log(`Example app listening on port ${port}!`)
 );
 
+const { Map } = await google.maps.importLibrary("maps");
+const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
+  "marker",
+);
+
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
+
+window.onload = function() {
+  initMap();
+}
+
+var map;
+      var marker = [];
+      var infoWindow = [];
+      var UserMarker = [];
+      var markerData = [
+        { name: 'つくば市', lat: 36.11159009499647, lng: 140.1043326938361 },
+        { name: '小川町駅', lat: 35.6951212, lng: 139.76610649999998 },
+        { name: '淡路町駅', lat: 35.69496, lng: 139.76746000000003 },
+        { name: '御茶ノ水駅', lat: 35.6993529, lng: 139.76526949999993 },
+        { name: '神保町駅', lat: 35.695932, lng: 139.75762699999996 },
+        { name: '新御茶ノ水駅', lat: 35.696932, lng: 139.76543200000003 }
+      ];
+
+      // 地図の初期化関数
+      function initMap() {
+        var mapLatLng = new google.maps.LatLng({
+          lat: markerData[0]['lat'],
+          lng: markerData[0]['lng']
+        });
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: mapLatLng,
+          zoom: 15,
+          mapTypeId: 'roadmap'
+        });
+
+        for (var i = 0; i < markerData.length; i++) {
+          markerLatLng = new google.maps.LatLng({
+            lat: markerData[i]['lat'],
+            lng: markerData[i]['lng']
+          });
+          marker[i] = new google.maps.Marker({
+            position: markerLatLng,
+            map: map
+          });
+
+          infoWindow[i] = new google.maps.InfoWindow({
+            content: '<div class="sample">' + markerData[i]['name'] + '</div>'
+          });
+
+          markerEvent(i);
+        }
+
+        //指定位置にマーカーを追加
+        map.addListener("click", (e) => {
+          placeMarkerAndPanTo(e.latLng, map);
+        });
+      
+        function placeMarkerAndPanTo(latLng, map) {
+          new google.maps.marker.AdvancedMarkerElement({
+          position: latLng,
+          map: map,
+          });
+          map.panTo(latLng);
+          }
+      }
+
+      function markerEvent(i) {
+        marker[i].addListener('click', function() {
+          infoWindow[i].open(map, marker[i]);
+        });
+      }
 
 const html = `
 <!DOCTYPE html>
@@ -79,71 +150,5 @@ const html = `
   </body>
 </html>
 `;
-var map;
-      var marker = [];
-      var infoWindow = [];
-      var UserMarker = [];
-      var markerData = [
-        { name: 'つくば市', lat: 36.11159009499647, lng: 140.1043326938361 },
-        { name: '小川町駅', lat: 35.6951212, lng: 139.76610649999998 },
-        { name: '淡路町駅', lat: 35.69496, lng: 139.76746000000003 },
-        { name: '御茶ノ水駅', lat: 35.6993529, lng: 139.76526949999993 },
-        { name: '神保町駅', lat: 35.695932, lng: 139.75762699999996 },
-        { name: '新御茶ノ水駅', lat: 35.696932, lng: 139.76543200000003 }
-      ];
-
-      // 地図の初期化関数
-      async function initMap() {
-        const { Map } = await google.maps.importLibrary("maps");
-        const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
-          "marker",
-        );
-        
-        var mapLatLng = new google.maps.LatLng({
-          lat: markerData[0]['lat'],
-          lng: markerData[0]['lng']
-        });
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: mapLatLng,
-          zoom: 15,
-          mapTypeId: 'roadmap'
-        });
-
-        for (var i = 0; i < markerData.length; i++) {
-          markerLatLng = new google.maps.LatLng({
-            lat: markerData[i]['lat'],
-            lng: markerData[i]['lng']
-          });
-          marker[i] = new google.maps.Marker({
-            position: markerLatLng,
-            map: map
-          });
-
-          infoWindow[i] = new google.maps.InfoWindow({
-            content: '<div class="sample">' + markerData[i]['name'] + '</div>'
-          });
-
-          markerEvent(i);
-        }
-
-        //指定位置にマーカーを追加
-        map.addListener("click", (e) => {
-          placeMarkerAndPanTo(e.latLng, map);
-        });
-      
-        function placeMarkerAndPanTo(latLng, map) {
-          new google.maps.marker.AdvancedMarkerElement({
-          position: latLng,
-          map: map,
-          });
-          map.panTo(latLng);
-          }
-      }
-
-      function markerEvent(i) {
-        marker[i].addListener('click', function() {
-          infoWindow[i].open(map, marker[i]);
-        });
-      }
       
       
