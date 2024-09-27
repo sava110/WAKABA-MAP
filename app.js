@@ -2,7 +2,7 @@ const express = require("express");
 require("dotenv").config();
 
 const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY; // .envからAPIキーを取得
-const { google } = require("googleapis"); // 修正: requireに戻しました
+const { google } = require("googleapis");
 const app = express();
 const port = process.env.PORT || 3001;
 
@@ -15,14 +15,16 @@ const html = `<!DOCTYPE html>
       @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
       @font-face {
         font-family: "neo-sans";
-        src: url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
+        src: url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"),
+            url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"),
+            url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
         font-style: normal;
         font-weight: 700;
       }
       html, body {
         font-family: neo-sans;
         font-weight: 700;
-        font-size: 32px; /* 修正: font-sizeに単位を追加 */
+        font-size: 32px;
         height: 100%;
         margin: 0;
         padding: 0;
@@ -31,9 +33,9 @@ const html = `<!DOCTYPE html>
         background: white;
       }
       #map {
-        height: 400px; /* 地図の高さを指定 */
-        width: 90%; /* 幅を90%に */
-        margin: 0 auto; /* 中央に寄せる */
+        height: 400px;
+        width: 90%;
+        margin: 0 auto;
       }
       section {
         padding: 1em;
@@ -63,17 +65,14 @@ const html = `<!DOCTYPE html>
       <p>from オタクは残酷だが正しい</p>
     </section>
     
-    <!-- 地図の表示 -->
     <div id="map"></div>
-    <!-- マーカー保存用の決定ボタン -->
     <button id="saveButton">この場所を保存</button>
 
-    <!-- Google Maps APIのスクリプトタグを埋め込む -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap"></script>
 
     <script>
       let map;
-      let markers = []; // 現在のマーカーを保存する配列
+      let currentMarker = null; // 現在のマーカーを保持
       const markerData = [
         { name: 'つくば市', lat: 36.11159009499647, lng: 140.1043326938361 },
         { name: '小川町駅', lat: 35.6951212, lng: 139.76610649999998 },
@@ -81,10 +80,10 @@ const html = `<!DOCTYPE html>
         { name: '御茶ノ水駅', lat: 35.6993529, lng: 139.76526949999993 },
         { name: '神保町駅', lat: 35.695932, lng: 139.75762699999996 },
         { name: '新御茶ノ水駅', lat: 35.696932, lng: 139.76543200000003 }
-      ]; // 保存されたマーカーのリスト
+      ];
 
       function initMap() {
-        const mapLatLng = new google.maps.LatLng(36.11159009499647, 140.1043326938361); // 初期位置：つくば市
+        const mapLatLng = new google.maps.LatLng(36.11159009499647, 140.1043326938361);
 
         map = new google.maps.Map(document.getElementById("map"), {
           center: mapLatLng,
@@ -93,16 +92,20 @@ const html = `<!DOCTYPE html>
         });
 
         // 初期マーカーを表示
-        for (let i = 0; i < markerData.length; i++) {
-          placeMarker(new google.maps.LatLng(markerData[i].lat, markerData[i].lng), markerData[i].name);
-        }
-
-        // マップをクリックしたときにマーカーを追加
-        map.addListener("click", (e) => {
-          placeMarker(e.latLng);
+        markerData.forEach(data => {
+          placeMarker(new google.maps.LatLng(data.lat, data.lng), data.name);
         });
 
-        // 決定ボタンをクリックしたときにマーカーをリストに保存
+        // マップをクリックしたときにマーカーを移動
+        map.addListener("click", (e) => {
+          if (currentMarker) {
+            currentMarker.setPosition(e.latLng); // 現在のマーカーを新しい位置に移動
+          } else {
+            currentMarker = placeMarker(e.latLng); // 新しいマーカーを作成
+          }
+        });
+
+        // 決定ボタンをクリックしたときにマーカーを保存
         document.getElementById("saveButton").addEventListener("click", saveMarker);
       }
 
@@ -110,31 +113,25 @@ const html = `<!DOCTYPE html>
         const marker = new google.maps.Marker({
           position: latLng,
           map: map,
-          title: title || '新しいマーカー', // タイトルを設定
+          title: title || '新しいマーカー',
         });
 
-        markers.push(marker); // マーカーを配列に保存
-
-        // マーカー位置に地図を移動
-        map.panTo(latLng);
+        return marker; // 作成したマーカーを返す
       }
 
       function saveMarker() {
-        if (markers.length > 0) {
-          // マーカーの位置情報をリストに保存
-          markers.forEach(marker => {
-            const markerPosition = marker.getPosition();
-            markerData.push({
-              lat: markerPosition.lat(),
-              lng: markerPosition.lng(),
-            });
+        if (currentMarker) {
+          const markerPosition = currentMarker.getPosition();
+          markerData.push({
+            lat: markerPosition.lat(),
+            lng: markerPosition.lng(),
           });
 
           console.log("Markers saved:", markerData);
 
-          // マーカーをリセット
-          markers.forEach(marker => marker.setMap(null));
-          markers = [];
+          // 現在のマーカーをリセット
+          currentMarker.setMap(null);
+          currentMarker = null;
         } else {
           alert("まずマーカーを置いてください。");
         }
