@@ -11,8 +11,12 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "await": "^0.2.6",
     "dotenv": "^16.4.5",
     "express": "^5.0.0",
+    "googleapis": "^144.0.0",
+    "maps": "^0.3.3",
+    "require": "^2.4.20",
     "yarn": "^1.22.22"
   }
 }
