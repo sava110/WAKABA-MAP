@@ -55,9 +55,16 @@ const html = `<!DOCTYPE html>
       #saveButton:hover {
         background-color: #45a049;
       }
+      #logo {
+        display: block;
+        margin: 0 auto; /* 中央に寄せる */
+        width: 200px; /* 適切な幅を指定 */
+        height: auto; /* 高さは自動調整 */
+      }
     </style>
   </head>
   <body>
+  <img src="2AEE1B44-E272-4BBE-AF04-6210B5DB7874.webp" alt="タイトルロゴ" id="logo">
     <section>
       <p>
         「わかばのみち」は、通りにくい道や整備されていない道を知りたい免許を取ったばかりの大学生向けのMAPアプリです。これは、道に口コミを残したり、その口コミを見たりすることができ、既存のMAPアプリとは違って、運転手主観のリアルな評価が備わっているものです。
@@ -75,9 +82,9 @@ const html = `<!DOCTYPE html>
       let currentMarker = null; // 現在のマーカーを保持
       const markerData = [
         { name: 'つくば市', lat: 36.11159009499647, lng: 140.1043326938361 },
-        { name: '小川町駅', lat: 35.6951212, lng: 139.76610649999998 },
-        { name: '淡路町駅', lat: 35.69496, lng: 139.76746000000003 },
-        { name: '御茶ノ水駅', lat: 35.6993529, lng: 139.76526949999993 },
+        { name: '', lat: 36.107186, lng: 140.111913 },
+        { name: '', lat: 36.102087, lng: 140.088618 },
+        { name: '', lat:36.091737, lng: 140.11286 },
         { name: '神保町駅', lat: 35.695932, lng: 139.75762699999996 },
         { name: '新御茶ノ水駅', lat: 35.696932, lng: 139.76543200000003 }
       ];
