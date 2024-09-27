@@ -73,7 +73,7 @@ const html = `<!DOCTYPE html>
 
     <script>
       let map;
-      let marker = null; // 現在のマーカーを保存する変数
+      let markers = []; // 現在のマーカーを保存する配列
       const markerData = [
         { name: 'つくば市', lat: 36.11159009499647, lng: 140.1043326938361 },
         { name: '小川町駅', lat: 35.6951212, lng: 139.76610649999998 },
@@ -107,34 +107,34 @@ const html = `<!DOCTYPE html>
       }
 
       function placeMarker(latLng, title) {
-        if (marker) {
-          marker.setMap(null); // 既にあるマーカーを削除
-        }
-
-        marker = new google.maps.Marker({
+        const marker = new google.maps.Marker({
           position: latLng,
           map: map,
           title: title || '新しいマーカー', // タイトルを設定
         });
+
+        markers.push(marker); // マーカーを配列に保存
 
         // マーカー位置に地図を移動
         map.panTo(latLng);
       }
 
       function saveMarker() {
-        if (marker) {
+        if (markers.length > 0) {
           // マーカーの位置情報をリストに保存
-          const markerPosition = marker.getPosition();
-          markerData.push({
-            lat: markerPosition.lat(),
-            lng: markerPosition.lng(),
+          markers.forEach(marker => {
+            const markerPosition = marker.getPosition();
+            markerData.push({
+              lat: markerPosition.lat(),
+              lng: markerPosition.lng(),
+            });
           });
 
-          console.log("Marker saved:", markerData);
+          console.log("Markers saved:", markerData);
 
           // マーカーをリセット
-          marker.setMap(null);
-          marker = null;
+          markers.forEach(marker => marker.setMap(null));
+          markers = [];
         } else {
           alert("まずマーカーを置いてください。");
         }
