@@ -74,9 +74,15 @@ const html = `
     <script src="https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap&language=ja" async defer></script>
 
     <script>
-      var map;
+      
+    </script>
+  </body>
+</html>
+`;
+var map;
       var marker = [];
       var infoWindow = [];
+      var UserMarker = [];
       var markerData = [
         { name: 'つくば市', lat: 36.11159009499647, lng: 140.1043326938361 },
         { name: '小川町駅', lat: 35.6951212, lng: 139.76610649999998 },
@@ -121,7 +127,21 @@ const html = `
           infoWindow[i].open(map, marker[i]);
         });
       }
-    </script>
-  </body>
-</html>
-`;
+      
+      //指定位置にマーカーを追加
+      const { Map } = await google.maps.importLibrary("maps");
+      const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
+        "marker",
+      );
+
+      map.addListener("click", (e) => {
+        placeMarkerAndPanTo(e.latLng, map);
+        });
+      
+      function placeMarkerAndPanTo(latLng, map) {
+        new google.maps.marker.AdvancedMarkerElement({
+        position: latLng,
+        map: map,
+      });
+      map.panTo(latLng);
+      }
