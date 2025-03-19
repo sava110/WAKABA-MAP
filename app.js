@@ -1,6 +1,6 @@
 const express = require("express");
 require("dotenv").config();
-
+//change API
 const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY; // .envからAPIキーを取得
 const { google } = require("googleapis");
 const app = express();
